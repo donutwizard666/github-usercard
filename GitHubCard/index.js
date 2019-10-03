@@ -2,16 +2,15 @@
            (replacing the palceholder with your Github name):
            https://api.github.com/users/<your name>
 */
-
-// import axios from 'axios';
-
 axios.get('https://api.github.com/users/donutwizard666')
-  .then( (response) => {
-    console.log(response);
-  })
-  .catch( error => {
-    console.log(error);
-  })
+.then(response => {
+  console.log(response);
+  const cards = document.querySelector('.cards');
+  cards.appendChild(createCard(response.data));
+})
+.catch(error => {
+  console.log('the data was not returned');
+})
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -54,17 +53,17 @@ const followersArray = [];
 </div>
 */
 
-function createCard(array) {
+function createCard(data) {
 
 const card = document.createElement('div');
 const img = document.createElement('img')
-img.src = "https://avatars0.githubusercontent.com/u/54790855?v=4";
 const cardInfo = document.createElement('div');
 const name = document.createElement('h3');
 const username = document.createElement('p');
 const location = document.createElement('p');
 const profile = document.createElement('p');
-const followers =document.createElement('p');
+const profileLink = document.createElement('a');
+const followers = document.createElement('p');
 const following = document.createElement('p');
 const bio = document.createElement('p');
 
@@ -73,11 +72,30 @@ cardInfo.classList.add('card-info');
 name.classList.add('name');
 username.classList.add('username');
 
-document.getElementById('body').appendChild(img);
+card.appendChild(img);
+card.appendChild(cardInfo);
+cardInfo.appendChild(name);
+cardInfo.appendChild(username);
+cardInfo.appendChild(location);
+cardInfo.appendChild(profile);
+cardInfo.appendChild(followers);
+cardInfo.appendChild(following);
+cardInfo.appendChild(bio);
 
 
+img.src = data.avatar_url;
+name.textContent = data.name;
+username.textContent = data.login;
+location.textContent = data.location;
+profile.textContent = 'profile: ';
+profileLink.textContent = data.html_url;
+followers.textContent = "Followers: " + data.followers;
+following.textContent = "Following: " + data.following;
+bio.textContent = "Bio: " + data.bio;
 
 
+profile.appendChild(profileLink);
+return card;
   
 }
 
@@ -88,3 +106,4 @@ document.getElementById('body').appendChild(img);
   luishrd
   bigknell
 */
+
