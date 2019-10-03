@@ -2,10 +2,11 @@
            (replacing the palceholder with your Github name):
            https://api.github.com/users/<your name>
 */
-import axios from 'axios';
+
+// import axios from 'axios';
 
 axios.get('https://api.github.com/users/donutwizard666')
-  .then( response => {
+  .then( (response) => {
     console.log(response);
   })
   .catch( error => {
@@ -56,7 +57,8 @@ const followersArray = [];
 function createCard(array) {
 
 const card = document.createElement('div');
-//img goes here//
+const img = document.createElement('img')
+img.src = "https://avatars0.githubusercontent.com/u/54790855?v=4";
 const cardInfo = document.createElement('div');
 const name = document.createElement('h3');
 const username = document.createElement('p');
@@ -66,7 +68,12 @@ const followers =document.createElement('p');
 const following = document.createElement('p');
 const bio = document.createElement('p');
 
+card.classList.add('card');
+cardInfo.classList.add('card-info');
+name.classList.add('name');
+username.classList.add('username');
 
+document.getElementById('body').appendChild(img);
 
 
 
