@@ -1,25 +1,45 @@
 /* Step 1: using axios, send a GET request to the following URL 
-           (replacing the palceholder with your Github name):
+           (replacing the palceholder with your Github name):    ✅
            https://api.github.com/users/<your name>
-*/
-axios.get('https://api.github.com/users/donutwizard666')
-.then(response => {
-  console.log(response);
-  const cards = document.querySelector('.cards');
-  cards.appendChild(createCard(response.data));
+*/ 
+axios
+  .get('https://api.github.com/users/donutwizard666') //using get to retrieve the api data
+  .then(response => {  //I have retrieved data, so THEN, do this (method)
+    const cards = document.querySelector('.cards'); //assigning cards to .card
+    cards.appendChild(createCard(response.data)); //putting cards onto the .cards (the DOM)
+    return response.data.followers_url; //we want to give the next THEN something to work with. Whatever the next THEN's response is, is what this return is (response.data.followers_url)
+  })
+
+  .then(response => { //chained the above .then
+    axios
+      .get(`${response}`) //another get command getting the RESPONSE above (response.data.followers_url)
+      .then(response => {
+        const cards = document.querySelector('.cards'); //assigning cards to .card
+        console.log(response); //this response is MY followers api --> "https://api.github.com/users/donutwizard666/followers"
+        response.data.forEach(element => { //going through the followers api 
+        console.log(element.url); //each on of my followers profile api link
+
+        axios //we need to get the data that is inside their api link
+          .get(`${element.url}`) //getting the element (api link)
+          .then(response => { // the response is data that is inside the api
+            cards.appendChild(createCard(response.data));  //taking that data (inside the api) and creating cards for my people
+        })
+    });
+  })
 })
+
 .catch(error => {
   console.log('the data was not returned');
 })
 /* Step 2: Inspect and study the data coming back, this is YOUR 
-   github info! You will need to understand the structure of this 
+   github info! You will need to understand the structure of this   ✅
    data in order to use it to build your component function 
 
    Skip to Step 3.
 */
 
 /* Step 4: Pass the data received from Github into your function, 
-           create a new component and add it to the DOM as a child of .cards
+           create a new component and add it to the DOM as a child of .cards ✅
 */
 
 /* Step 5: Now that you have your own card getting added to the DOM, either 
@@ -27,15 +47,15 @@ axios.get('https://api.github.com/users/donutwizard666')
           , manually find some other users' github handles, or use the list found 
           at the bottom of the page. Get at least 5 different Github usernames and add them as
           Individual strings to the friendsArray below.
-          
           Using that array, iterate over it, requesting data for each user, creating a new card for each
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['mmcdermott011', 'viewgo', 'primelos', 'adamwinzdesign', 'Sara-DLC'];
+
 
 /* Step 3: Create a function that accepts a single object as its only argument,
-          Using DOM methods and properties, create a component that will return the following DOM element:
+          Using DOM methods and properties, create a component that will return the following DOM element: ✅
 
 <div class="card">
   <img src={image url of user} />
@@ -54,7 +74,7 @@ const followersArray = [];
 */
 
 function createCard(data) {
-
+console.log(data);
 const card = document.createElement('div');
 const img = document.createElement('img')
 const cardInfo = document.createElement('div');
